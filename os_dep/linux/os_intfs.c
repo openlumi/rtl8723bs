@@ -1611,13 +1611,14 @@ int rtw_os_ndev_register(_adapter *adapter, const char *name)
 	/* Tell the network stack we exist */
 
 	if (rtnl_lock_needed)
-		ret = (register_netdev(ndev) == 0) ? _SUCCESS : _FAIL;
-	else
+		rtnl_lock();
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
-		ret = (cfg80211_register_netdevice(ndev) == 0) ? _SUCCESS : _FAIL;
+	ret = (cfg80211_register_netdevice(ndev) == 0) ? _SUCCESS : _FAIL;
 #else
-		ret = (register_netdevice(ndev) == 0) ? _SUCCESS : _FAIL;
+	ret = (register_netdevice(ndev) == 0) ? _SUCCESS : _FAIL;
 #endif
+	if (rtnl_lock_needed)
+		rtnl_unlock();
 
 	if (ret == _SUCCESS)
 		adapter->registered = 1;
@@ -1662,13 +1663,14 @@ void rtw_os_ndev_unregister(_adapter *adapter)
 		u8 rtnl_lock_needed = rtw_rtnl_lock_needed(dvobj);
 
 		if (rtnl_lock_needed)
-			unregister_netdev(netdev);
-		else
+			rtnl_lock();
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
-			cfg80211_unregister_netdevice(netdev);
+		cfg80211_unregister_netdevice(netdev);
 #else
-			unregister_netdevice(netdev);
+		unregister_netdevice(netdev);
 #endif
+		if (rtnl_lock_needed)
+			rtnl_unlock();
 	}
 
 #if defined(CONFIG_IOCTL_CFG80211) && !defined(RTW_SINGLE_WIPHY)

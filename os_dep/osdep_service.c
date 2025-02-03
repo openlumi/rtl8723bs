@@ -2346,13 +2346,14 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	rtnl_lock_needed = rtw_rtnl_lock_needed(dvobj);
 
 	if (rtnl_lock_needed)
-		unregister_netdev(cur_pnetdev);
-	else
+		rtnl_lock();
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 		cfg80211_unregister_netdevice(cur_pnetdev);
 #else
 		unregister_netdevice(cur_pnetdev);
 #endif
+	if (rtnl_lock_needed)
+		rtnl_unlock();
 
 	rereg_priv->old_pnetdev = cur_pnetdev;
 
@@ -2373,13 +2374,14 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 #endif
 
 	if (rtnl_lock_needed)
-		ret = register_netdev(pnetdev);
-	else
+	    rtnl_lock();
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
 		ret = cfg80211_register_netdevice(pnetdev);
 #else
 		ret = register_netdevice(pnetdev);
 #endif
+	if (rtnl_lock_needed)
+	    rtnl_unlock();
 
 	if (ret != 0) {
 		goto error;
