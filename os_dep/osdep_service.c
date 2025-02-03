@@ -2348,7 +2348,11 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	if (rtnl_lock_needed)
 		unregister_netdev(cur_pnetdev);
 	else
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+		cfg80211_unregister_netdevice(cur_pnetdev);
+#else
 		unregister_netdevice(cur_pnetdev);
+#endif
 
 	rereg_priv->old_pnetdev = cur_pnetdev;
 
@@ -2371,7 +2375,11 @@ int rtw_change_ifname(_adapter *padapter, const char *ifname)
 	if (rtnl_lock_needed)
 		ret = register_netdev(pnetdev);
 	else
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+		ret = cfg80211_register_netdevice(pnetdev);
+#else
 		ret = register_netdevice(pnetdev);
+#endif
 
 	if (ret != 0) {
 		goto error;
@@ -2701,7 +2709,7 @@ int map_readN(const struct map_t *map, u16 offset, u16 len, u8 *buf)
 			else
 				c_len = seg->sa + seg->len - offset;
 		}
-			
+
 		_rtw_memcpy(c_dst, c_src, c_len);
 	}
 
