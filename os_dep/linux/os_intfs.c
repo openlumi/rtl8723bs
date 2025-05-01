@@ -1677,7 +1677,7 @@ void rtw_os_ndev_unregister(_adapter *adapter)
 #ifdef CONFIG_RFKILL_POLL
 	rtw_cfg80211_deinit_rfkill(adapter_to_wiphy(adapter));
 #endif
-	rtw_wiphy_unregister(adapter_to_wiphy(adapter));
+	// rtw_wiphy_unregister(adapter_to_wiphy(adapter));
 #endif
 
 #ifdef CONFIG_RTW_NAPI
