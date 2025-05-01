@@ -1654,31 +1654,31 @@ void rtw_os_ndev_unregister(_adapter *adapter)
 
 	netdev = adapter->pnetdev;
 
-#if defined(CONFIG_IOCTL_CFG80211)
-	rtw_cfg80211_ndev_res_unregister(adapter);
-#endif
+//#if defined(CONFIG_IOCTL_CFG80211)
+//	rtw_cfg80211_ndev_res_unregister(adapter);
+//#endif
 
 	if ((adapter->DriverState != DRIVER_DISAPPEAR) && netdev) {
-		struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
-		u8 rtnl_lock_needed = rtw_rtnl_lock_needed(dvobj);
-
-		if (rtnl_lock_needed)
-			rtnl_lock();
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
-		// cfg80211_unregister_netdevice(netdev);
-#else
-		unregister_netdevice(netdev);
-#endif
-		if (rtnl_lock_needed)
-			rtnl_unlock();
+//		struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
+//		u8 rtnl_lock_needed = rtw_rtnl_lock_needed(dvobj);
+//
+//		if (rtnl_lock_needed)
+//			rtnl_lock();
+//#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
+//		// cfg80211_unregister_netdevice(netdev);
+//#else
+//		unregister_netdevice(netdev);
+//#endif
+//		if (rtnl_lock_needed)
+//			rtnl_unlock();
 	}
 
-#if defined(CONFIG_IOCTL_CFG80211) && !defined(RTW_SINGLE_WIPHY)
-#ifdef CONFIG_RFKILL_POLL
-	rtw_cfg80211_deinit_rfkill(adapter_to_wiphy(adapter));
-#endif
-	rtw_wiphy_unregister(adapter_to_wiphy(adapter));
-#endif
+//#if defined(CONFIG_IOCTL_CFG80211) && !defined(RTW_SINGLE_WIPHY)
+//#ifdef CONFIG_RFKILL_POLL
+//	rtw_cfg80211_deinit_rfkill(adapter_to_wiphy(adapter));
+//#endif
+//	rtw_wiphy_unregister(adapter_to_wiphy(adapter));
+//#endif
 
 #ifdef CONFIG_RTW_NAPI
 	if (adapter->napi_state == NAPI_ENABLE) {
