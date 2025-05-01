@@ -1665,7 +1665,7 @@ void rtw_os_ndev_unregister(_adapter *adapter)
 		if (rtnl_lock_needed)
 			rtnl_lock();
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 12, 0)
-		cfg80211_unregister_netdevice(netdev);
+		// cfg80211_unregister_netdevice(netdev);
 #else
 		unregister_netdevice(netdev);
 #endif
@@ -1677,7 +1677,7 @@ void rtw_os_ndev_unregister(_adapter *adapter)
 #ifdef CONFIG_RFKILL_POLL
 	rtw_cfg80211_deinit_rfkill(adapter_to_wiphy(adapter));
 #endif
-	// rtw_wiphy_unregister(adapter_to_wiphy(adapter));
+	rtw_wiphy_unregister(adapter_to_wiphy(adapter));
 #endif
 
 #ifdef CONFIG_RTW_NAPI
