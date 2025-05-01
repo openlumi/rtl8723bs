@@ -1653,7 +1653,7 @@ void rtw_os_ndev_unregister(_adapter *adapter)
 	if ((adapter->DriverState != DRIVER_DISAPPEAR) && netdev) {
 		struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 
-        unregister_netdev(netdev);
+        cfg80211_unregister_netdevice(netdev);
 	}
 
 #if defined(CONFIG_IOCTL_CFG80211) && !defined(RTW_SINGLE_WIPHY)
