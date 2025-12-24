@@ -533,7 +533,7 @@ static void  PHY_SetRFPathSwitch(PADAPTER padapter , BOOLEAN bMain) {
 #ifdef CONFIG_RTL8188E
 		phy_set_rf_path_switch_8188e(padapter, bMain);
 #endif
-	} else if (IS_HARDWARE_TYPE_8814A(padapter)) {	
+	} else if (IS_HARDWARE_TYPE_8814A(padapter)) {
 #ifdef CONFIG_RTL8814A
 		phy_set_rf_path_switch_8814a(padapter, bMain);
 #endif
@@ -621,9 +621,9 @@ MPT_InitializeAdapter(
 		phy_set_bb_reg(pAdapter, 0xA00, BIT8, 0x0);
 		PHY_SetRFPathSwitch(pAdapter, 1/*pHalData->bDefaultAntenna*/); /*default use Main*/
 
-		if (pHalData->PackageType == PACKAGE_DEFAULT) 
+		if (pHalData->PackageType == PACKAGE_DEFAULT)
 			phy_set_rf_reg(pAdapter, RF_PATH_A, 0x51, bRFRegOffsetMask, 0x6B04E);
-		else 
+		else
 			phy_set_rf_reg(pAdapter, RF_PATH_A, 0x51, bRFRegOffsetMask, 0x6F10E);
 	}
 	/*set ant to wifi side in mp mode*/
@@ -2099,7 +2099,7 @@ u32 mp_query_psd(PADAPTER pAdapter, u8 *data)
 			psd_data = rtw_GetPSDData(pAdapter, i - psd_pts);
 		else
 			psd_data = rtw_GetPSDData(pAdapter, i);
-		sprintf(data, "%s%x ", data, psd_data);
+		sprintf(data + strlen(data), "%x ", psd_data);
 		i++;
 	}
 

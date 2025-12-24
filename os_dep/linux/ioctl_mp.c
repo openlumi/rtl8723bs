@@ -853,7 +853,7 @@ int rtw_mp_disable_bt_coexist(struct net_device *dev,
 		return -EFAULT;
 
 	_rtw_memset(input, 0, sizeof(input));
-	
+
 	if (copy_from_user(input, wrqu->data.pointer, wrqu->data.length))
 		return -EFAULT;
 
@@ -2150,11 +2150,11 @@ int rtw_efuse_mask_file(struct net_device *dev,
 		 } while (count < 64);
 
 		for (i = 0; i < count; i++)
-			sprintf(extra, "%s:%02x", extra, maskfileBuffer[i]);
+			sprintf(extra + strlen(extra), ":%02x", maskfileBuffer[i]);
 
 		padapter->registrypriv.bFileMaskEfuse = _TRUE;
 
-		sprintf(extra, "%s\nLoad Efuse Mask data %d hex ok\n", extra, count);
+		sprintf(extra + strlen(extra), "\nLoad Efuse Mask data %d hex ok\n", count);
 		wrqu->data.length = strlen(extra);
 		return 0;
 	}
@@ -2277,7 +2277,7 @@ int rtw_mp_SetBT(struct net_device *dev,
 		return -EFAULT;
 
 	*(extra + wrqu->data.length) = '\0';
-	
+
 	if (strlen(extra) < 1)
 		return -EFAULT;
 
@@ -2577,11 +2577,11 @@ todo:
 			if ((pMptCtx->mptOutBuf[i] == 0x00) && (pMptCtx->mptOutBuf[i + 1] == 0x00))
 				goto exit;
 
-			sprintf(extra, "%s %d ", extra, (pMptCtx->mptOutBuf[i] & 0x1f));
+			sprintf(extra + strlen(extra), " %d ", (pMptCtx->mptOutBuf[i] & 0x1f));
 		}
 	} else {
 		for (i = 4; i < pMptCtx->mptOutLen; i++)
-			sprintf(extra, "%s 0x%x ", extra, pMptCtx->mptOutBuf[i]);
+			sprintf(extra + strlen(extra), " 0x%x ", pMptCtx->mptOutBuf[i]);
 	}
 
 exit:
