@@ -822,14 +822,14 @@ sint recv_ucast_pn_decache(union recv_frame *precv_frame, struct stainfo_rxcache
 	if (tid > 15)
 		return _FAIL;
 
-	if (pattrib->encrypt != _AES_) 
+	if (pattrib->encrypt != _AES_)
 		return _SUCCESS;
-		
+
 	tmp_iv_hdr = le64_to_cpu(*(u64*)(pdata + pattrib->hdrlen));
 	pkt_pn = CCMPH_2_PN(tmp_iv_hdr);
-	
+
 	tmp_iv_hdr = le64_to_cpu(*(u64*)prxcache->iv[tid]);
-	curr_pn = CCMPH_2_PN(tmp_iv_hdr);	
+	curr_pn = CCMPH_2_PN(tmp_iv_hdr);
 
 	if (!VALID_PN_CHK(pkt_pn, curr_pn)) {
 		/* return _FAIL; */
@@ -858,7 +858,7 @@ sint recv_bcast_pn_decache(union recv_frame *precv_frame)
 
 	if (check_fwstate(pmlmepriv, WIFI_STATION_STATE) == _FALSE)
 		return _SUCCESS;
-		
+
 	tmp_iv_hdr = le64_to_cpu(*(u64*)(pdata + pattrib->hdrlen));
 	key_id = CCMPH_2_KEYID(tmp_iv_hdr);
 	pkt_pn = CCMPH_2_PN(tmp_iv_hdr);
@@ -1936,7 +1936,7 @@ sint validate_recv_data_frame(_adapter *adapter, union recv_frame *precv_frame)
 			#endif
 			ret = _FAIL;
 			goto exit;
-		}		
+		}
 	} else {
 		if (recv_bcast_pn_decache(precv_frame) == _FAIL) {
 			#ifdef DBG_RX_DROP_FRAME
@@ -2273,8 +2273,9 @@ sint validate_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 					dump_rx_packet(ptr);
 			}
 			#endif
-		} else
+		} else {
 			DBG_COUNTER(adapter->rx_logs.core_rx_pre_data_handled);
+		}
 		break;
 	default:
 		DBG_COUNTER(adapter->rx_logs.core_rx_pre_unknown);
@@ -2777,7 +2778,7 @@ union recv_frame *recvframe_chk_defrag(PADAPTER padapter, union recv_frame *prec
 
 }
 
-int amsdu_to_msdu(_adapter *padapter, union recv_frame *prframe)
+static int amsdu_to_msdu(_adapter *padapter, union recv_frame *prframe)
 {
 	int	a_len, padding_len;
 	u16	nSubframe_Length;
@@ -2975,7 +2976,7 @@ int enqueue_reorder_recvframe(struct recv_reorder_ctrl *preorder_ctrl, union rec
 
 }
 
-void recv_indicatepkts_pkt_loss_cnt(_adapter *padapter, u64 prev_seq, u64 current_seq)
+static void recv_indicatepkts_pkt_loss_cnt(_adapter *padapter, u64 prev_seq, u64 current_seq)
 {
 	struct recv_priv *precvpriv = &padapter->recvpriv;
 
@@ -3398,7 +3399,7 @@ int process_recv_indicatepkts(_adapter *padapter, union recv_frame *prframe)
 }
 
 #ifdef CONFIG_MP_INCLUDED
-int validate_mp_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
+static int validate_mp_recv_frame(_adapter *adapter, union recv_frame *precv_frame)
 {
 	int ret = _SUCCESS;
 	u8 *ptr = precv_frame->u.hdr.rx_data;
@@ -3535,7 +3536,7 @@ static sint MPwlanhdr_to_ethhdr(union recv_frame *precvframe)
 }
 
 
-int mp_recv_frame(_adapter *padapter, union recv_frame *rframe)
+static int mp_recv_frame(_adapter *padapter, union recv_frame *rframe)
 {
 	int ret = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = &rframe->u.hdr.attrib;
@@ -3975,7 +3976,7 @@ static sint fill_radiotap_hdr(_adapter *padapter, union recv_frame *precvframe, 
 
 }
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 24))
-int recv_frame_monitor(_adapter *padapter, union recv_frame *rframe)
+static int recv_frame_monitor(_adapter *padapter, union recv_frame *rframe)
 {
 	int ret = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = &rframe->u.hdr.attrib;
@@ -4022,7 +4023,7 @@ exit:
 	return ret;
 }
 #endif
-int recv_func_prehandle(_adapter *padapter, union recv_frame *rframe)
+static int recv_func_prehandle(_adapter *padapter, union recv_frame *rframe)
 {
 	int ret = _SUCCESS;
 	struct rx_pkt_attrib *pattrib = &rframe->u.hdr.attrib;
@@ -4058,7 +4059,7 @@ exit:
 }
 
 /*#define DBG_RX_BMC_FRAME*/
-int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
+static int recv_func_posthandle(_adapter *padapter, union recv_frame *prframe)
 {
 	int ret = _SUCCESS;
 	union recv_frame *orig_prframe = prframe;
@@ -4529,7 +4530,7 @@ static void rx_process_link_qual(_adapter *padapter, union recv_frame *prframe)
 #endif /* CONFIG_NEW_SIGNAL_STAT_PROCESS */
 }
 
-void rx_process_phy_info(_adapter *padapter, union recv_frame *rframe)
+static void rx_process_phy_info(_adapter *padapter, union recv_frame *rframe)
 {
 	/* Check RSSI */
 	rx_process_rssi(padapter, rframe);

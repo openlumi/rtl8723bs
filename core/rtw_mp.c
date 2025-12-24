@@ -386,7 +386,7 @@ static VOID PHY_SetRFPathSwitch_default(
 }
 
 
-void mpt_InitHWConfig(PADAPTER Adapter)
+static void mpt_InitHWConfig(PADAPTER Adapter)
 {
 	PHAL_DATA_TYPE hal;
 
@@ -1170,7 +1170,7 @@ int SetTxPower(PADAPTER pAdapter)
 	return _TRUE;
 }
 
-void SetTxAGCOffset(PADAPTER pAdapter, u32 ulTxAGCOffset)
+static void SetTxAGCOffset(PADAPTER pAdapter, u32 ulTxAGCOffset)
 {
 	u32 TxAGCOffset_B, TxAGCOffset_C, TxAGCOffset_D, tmpAGC;
 
@@ -1621,7 +1621,7 @@ void fill_tx_desc_8192e(PADAPTER padapter)
 #endif
 
 #if defined(CONFIG_RTL8723B)
-void fill_tx_desc_8723b(PADAPTER padapter)
+static void fill_tx_desc_8723b(PADAPTER padapter)
 {
 	struct mp_priv *pmp_priv = &padapter->mppriv;
 	struct pkt_attrib *pattrib = &(pmp_priv->tx.attrib);

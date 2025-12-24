@@ -1494,7 +1494,7 @@ _phy_mac_setting_calibration8723b(
 	odm_write_1byte(p_dm, mac_reg[i], (u8)(mac_backup[i] & (~BIT(5))));
 }
 
-void
+static void
 _phy_path_a_stand_by8723b(
 	struct PHY_DM_STRUCT		*p_dm
 )
@@ -1522,7 +1522,7 @@ _phy_pi_mode_switch8723b(
 	odm_set_bb_reg(p_dm, REG_FPGA0_XB_HSSI_PARAMETER1, MASKDWORD, mode);
 }
 
-boolean
+static boolean
 phy_simularity_compare_8723b(
 	struct PHY_DM_STRUCT		*p_dm,
 	s32		result[][8],
@@ -1617,7 +1617,7 @@ phy_simularity_compare_8723b(
 }
 
 
-void
+static void
 _phy_iq_calibrate_8723b(
 	struct PHY_DM_STRUCT		*p_dm,
 	s32		result[][8],
@@ -1891,7 +1891,7 @@ _phy_iq_calibrate_8723b(
 }
 
 
-void
+static void
 _phy_lc_calibrate_8723b(
 	struct PHY_DM_STRUCT		*p_dm,
 	boolean	is2T
@@ -2129,7 +2129,7 @@ phy_iq_calibrate_8723b(
 		p_dm->rf_calibrate_info.rege9c = p_dm->rf_calibrate_info.regebc = 0x0;		/* Y default value */
 	}
 
-	if (rege94 != 0) 
+	if (rege94 != 0)
 		_phy_path_a_fill_iqk_matrix8723b(p_dm, is_patha_ok, result, final_candidate, (regea4 == 0));
 	if (regeb4 != 0)
 		_phy_path_b_fill_iqk_matrix8723b(p_dm, is_pathb_ok, result, final_candidate, (regec4 == 0));
@@ -2194,7 +2194,7 @@ phy_lc_calibrate_8723b(
 	_phy_lc_calibrate_8723b(p_dm, false);
 }
 
-void _phy_set_rf_path_switch_8723b(
+static void _phy_set_rf_path_switch_8723b(
 #if (DM_ODM_SUPPORT_TYPE & ODM_AP)
 	struct PHY_DM_STRUCT		*p_dm,
 #else

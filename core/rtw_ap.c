@@ -803,7 +803,7 @@ _exit:
 }
 #endif
 
-void rtw_init_bmc_sta_tx_rate(_adapter *padapter, struct sta_info *psta)
+static void rtw_init_bmc_sta_tx_rate(_adapter *padapter, struct sta_info *psta)
 {
 	struct mlme_priv *pmlmepriv = &(padapter->mlmepriv);
 	struct mlme_ext_priv *pmlmeext = &(padapter->mlmeextpriv);
@@ -1368,7 +1368,7 @@ static void rtw_ap_check_scan(_adapter *padapter)
 
 					if (_FALSE == ATOMIC_READ(&pmlmepriv->olbc_ht))
 						ATOMIC_SET(&pmlmepriv->olbc_ht, _TRUE);
-					
+
 					if (padapter->registrypriv.wifi_spec)
 						RTW_INFO("%s: %s is a/b/g ap\n", __func__, pnetwork->network.Ssid.Ssid);
 				}
@@ -1535,7 +1535,7 @@ chbw_decision:
 
 #ifdef CONFIG_MCC_MODE
 	if (MCC_EN(padapter)) {
-		/* 
+		/*
 		* due to check under rtw_ap_chbw_decision
 		* if under MCC mode, means req channel setting is the same as current channel setting
 		* if not under MCC mode, mean req channel setting is not the same as current channel setting
@@ -2149,7 +2149,7 @@ int rtw_check_beacon_data(_adapter *padapter, u8 *pbuf,  int len)
 }
 
 #if CONFIG_RTW_MACADDR_ACL
-void rtw_macaddr_acl_init(_adapter *adapter)
+static void rtw_macaddr_acl_init(_adapter *adapter)
 {
 	struct sta_priv *stapriv = &adapter->stapriv;
 	struct wlan_acl_pool *acl = &stapriv->acl_list;
@@ -2168,7 +2168,7 @@ void rtw_macaddr_acl_init(_adapter *adapter)
 	_exit_critical_bh(&(acl_node_q->lock), &irqL);
 }
 
-void rtw_macaddr_acl_deinit(_adapter *adapter)
+static void rtw_macaddr_acl_deinit(_adapter *adapter)
 {
 	struct sta_priv *stapriv = &adapter->stapriv;
 	struct wlan_acl_pool *acl = &stapriv->acl_list;
@@ -2444,7 +2444,7 @@ int rtw_ap_set_wep_key(_adapter *padapter, u8 *key, u8 keylen, int keyid, u8 set
 	return rtw_ap_set_key(padapter, key, alg, keyid, set_tx);
 }
 
-u8 rtw_ap_bmc_frames_hdl(_adapter *padapter)
+static u8 rtw_ap_bmc_frames_hdl(_adapter *padapter)
 {
 #define HIQ_XMIT_COUNTS (6)
 	_irqL irqL;
@@ -3709,7 +3709,7 @@ void start_ap_mode(_adapter *padapter)
 
 }
 
-void rtw_ap_bcmc_sta_flush(_adapter *padapter)
+static void rtw_ap_bcmc_sta_flush(_adapter *padapter)
 {
 #ifdef CONFIG_CONCURRENT_MODE
 	int cam_id = -1;
@@ -3973,7 +3973,7 @@ bool rtw_ap_chbw_decision(_adapter *adapter, s16 req_ch, s8 req_bw, s8 req_offse
 
 				rtw_hal_set_mcc_setting_disconnect(adapter);
 			}
-		}	
+		}
 	}
 #endif /* CONFIG_MCC_MODE */
 

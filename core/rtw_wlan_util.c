@@ -1042,7 +1042,7 @@ inline bool rtw_sec_camid_is_drv_forbid(struct cam_ctl_t *cam_ctl, u8 id)
 	return 1;
 }
 
-bool _rtw_sec_camid_is_used(struct cam_ctl_t *cam_ctl, u8 id)
+static bool _rtw_sec_camid_is_used(struct cam_ctl_t *cam_ctl, u8 id)
 {
 	bool ret = _FALSE;
 
@@ -1130,7 +1130,7 @@ inline bool rtw_camid_is_gk(_adapter *adapter, u8 cam_id)
 	return ret;
 }
 
-bool cam_cache_chk(_adapter *adapter, u8 id, u8 *addr, s16 kid, s8 gk)
+static bool cam_cache_chk(_adapter *adapter, u8 id, u8 *addr, s16 kid, s8 gk)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	bool ret = _FALSE;
@@ -1148,7 +1148,7 @@ exit:
 	return ret;
 }
 
-s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid, s8 gk)
+static s16 _rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid, s8 gk)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
@@ -1188,7 +1188,7 @@ s16 rtw_camid_search(_adapter *adapter, u8 *addr, s16 kid, s8 gk)
 	return cam_id;
 }
 
-s16 rtw_get_camid(_adapter *adapter, struct sta_info *sta, u8 *addr, s16 kid)
+static s16 rtw_get_camid(_adapter *adapter, struct sta_info *sta, u8 *addr, s16 kid)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
@@ -1302,7 +1302,7 @@ bitmap_handle:
 	return cam_id;
 }
 
-void rtw_camid_set(_adapter *adapter, u8 cam_id)
+static void rtw_camid_set(_adapter *adapter, u8 cam_id)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
@@ -1385,7 +1385,7 @@ inline void rtw_sec_cam_swap(_adapter *adapter, u8 cam_id_a, u8 cam_id_b)
 	}
 }
 
-s16 rtw_get_empty_cam_entry(_adapter *adapter, u8 start_camid)
+static s16 rtw_get_empty_cam_entry(_adapter *adapter, u8 start_camid)
 {
 	struct dvobj_priv *dvobj = adapter_to_dvobj(adapter);
 	struct cam_ctl_t *cam_ctl = &dvobj->cam_ctl;
@@ -1568,7 +1568,7 @@ void WMMOnAssocRsp(_adapter *padapter)
 #ifdef CONFIG_WMMPS_STA
 	struct mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
 	struct qos_priv	*pqospriv = &pmlmepriv->qospriv;
-#endif /* CONFIG_WMMPS_STA */	
+#endif /* CONFIG_WMMPS_STA */
 
 	acm_mask = 0;
 
@@ -1694,7 +1694,7 @@ void WMMOnAssocRsp(_adapter *padapter)
 			pxmitpriv->wmm_para_seq[i] = inx[i];
 			RTW_INFO("wmm_para_seq(%d): %d\n", i, pxmitpriv->wmm_para_seq[i]);
 		}
-		
+
 #ifdef CONFIG_WMMPS_STA
 		/* if AP supports UAPSD function, driver must set each uapsd TID to coresponding mac register 0x693 */
 		if (pmlmeinfo->WMM_param.QoS_info & AP_SUPPORTED_UAPSD) {
@@ -2166,7 +2166,7 @@ void	update_ldpc_stbc_cap(struct sta_info *psta)
 #endif /* CONFIG_80211N_HT */
 }
 
-int check_ielen(u8 *start, uint len)
+static int check_ielen(u8 *start, uint len)
 {
 	int left = len;
 	u8 *pos = start;
@@ -2277,8 +2277,9 @@ int rtw_get_bcn_keys(ADAPTER *Adapter, u8 *pframe, u32 packet_len,
 
 		_rtw_memcpy(recv_beacon->ssid, elems.ssid, elems.ssid_len);
 		recv_beacon->ssid_len = elems.ssid_len;
-	} else
+	} else {
 		; /* means hidden ssid */
+	}
 
 	/* checking RSN first */
 	if (elems.rsn_ie && elems.rsn_ie_len) {
